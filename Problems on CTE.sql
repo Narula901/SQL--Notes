@@ -238,9 +238,6 @@ order by TotalLateOrders desc
 
 
 
-select * from [dbo].[Order Details] 
-select * from [dbo].[Orders] order by OrderDate desc
-select * from [dbo].[Customers]
 
 	
 

@@ -8,6 +8,7 @@ use AdventureWorksDW2019
 go 
 select * from DimCustomer
 
+select count(1) from DimCustomer    --- both are giving the same result
 select count(*) from DimCustomer
 
 select * from FactInternetSales
