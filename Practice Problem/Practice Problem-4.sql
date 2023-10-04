@@ -34,4 +34,3 @@ from employee
 where date_of_exit is null
 order by department 
 
-
