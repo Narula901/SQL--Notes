@@ -102,3 +102,40 @@ JOIN (
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SELECT trans_id, trans_date
+FROM [Transaction]
+WHERE (trans_date, trans_amount) IN (
+  SELECT trans_date, MAX(trans_amount)
+  FROM [Transaction]
+  GROUP BY DATE_FORMAT(trans_date, '%Y-%m')
+);
+
+
+select * from [Transaction]
+go
+
+with CTE as 
+(
+select trans_date , month(trans_date) mon, trans_amount
+from [Transaction]
+),
+CTE_1 as
+(
+select mon,max(trans_amount) as maxi
+from CTE
+group by mon
+)
+select C.trans_date, C.mon, C.trans_amount
+from CTE C
+inner join CTE_1 P
+on C.mon = P.mon
+where C.trans_amount = P.maxi
+
+select *,
+max(trans_amount) over (partition by month(trans_date) order by month(trans_date)) as maxi
+from [Transaction]
+
+
+

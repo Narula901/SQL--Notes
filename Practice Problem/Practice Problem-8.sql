@@ -12,6 +12,9 @@ INSERT INTO iphone_tbl VALUES (
 (4, 'iphone 15'),
 (5, 'iphone 13');
 
+
+
+select * from iphone_tbl
 /*
 Problem Statement 1st -: Write a query to find the user who has bought iphone 15 and never bought any Iphone ?
 */
@@ -56,3 +59,24 @@ drop table iphone_tbl
 select [user_id], model, count(*) as cnt
 from iphone_tbl
 group by [user_id], model
+
+with CTE as
+(
+select [user_id]
+from iphone_tbl
+group by [user_id]
+having count(1) = 1
+)
+select C.[user_id] 
+from CTE C
+inner join iphone_tbl I
+on C.[user_id] = I.[user_id]
+where I.model = 'iphone 15' 
+
+select * from iphone_tbl
+
+select [user_id]
+from iphone_tbl
+group by [user_id]
+having count(1) = sum(case when model = 'iphone 15' then 1 else 0 end)
+case when model = 'iphone 15' then 1 else 0 end

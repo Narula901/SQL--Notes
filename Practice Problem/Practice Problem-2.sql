@@ -22,6 +22,8 @@ INSERT INTO students_attend VALUES (
 
 select * from students_attend
 
+go
+
 		WITH cte AS (
 		SELECT *, 
 		ROW_NUMBER() OVER(PARTITION BY student_id ORDER BY class_date)

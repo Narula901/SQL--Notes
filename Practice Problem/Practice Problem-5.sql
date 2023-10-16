@@ -12,3 +12,6 @@ select  *
 from CTE
 where [Month] <=11
 order by CustomerID, OrderDate
+
+
+select * from  [Sales].[Order]

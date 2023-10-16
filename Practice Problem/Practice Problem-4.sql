@@ -4,6 +4,7 @@ Write a sql query to get emp id and department for each department who recently 
 
 */
 
+select * from employee
 
 -- Create the employee table
 CREATE TABLE employee (
@@ -28,9 +29,23 @@ VALUES
 	(8, 'Hitesh', 'Bhardwaj', '2023-08-05', NULL, 'Sales');
 
 
-
+-----1st method 
 select * , DENSE_RANK() over(partition by department order by date_of_join desc) rnk
 from employee
 where date_of_exit is null
 order by department 
 
+select * from employee
+
+
+-- 2nd method
+go
+select emp_id, date_of_join, department
+from employee
+where date_of_exit is null
+group by emp_id, date_of_join, department
+order by department, date_of_join desc
+
+
+select *
+from employee

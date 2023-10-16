@@ -14,5 +14,8 @@ where average_depatment <= Total_average
 group by  department_id, average_depatment, Total_average
 
 
+select * from worker
+
+
 
 
