@@ -1,0 +1,10 @@
+https://www.techonthenet.com/sql/primary_keys.php
+
+DBMS course
+https://www.youtube.com/watch?v=bSdvM_0hzgc&list=PLxCzCOWd7aiFAN6I8CuViBuCdJgiOkT2Y&index=22
+
+fan trap and chasam trap
+https://www.youtube.com/watch?v=p4o5VrHoHcM
+
+Constraint on Genralization/Specialization
+https://www.youtube.com/watch?v=AAxuAEbXRlE&t=601s
