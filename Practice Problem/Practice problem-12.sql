@@ -39,4 +39,23 @@ HAVING COUNT(1) = SUM(CASE WHEN model = 'IPhone 15' THEN 1 ELSE 0 END );
 
 
 
+
+----
+select * from [dbo].[iphone_tbl]
+with CTE as
+(
+select [user_id] from [dbo].[iphone_tbl]
+where model = 'iphone 15'
+group by [user_id] 
+)
+CTE_1 as
+(
+select [user_id] from [dbo].[iphone_tbl]
+where model = 
+group by [user_id] 
+)
+
+
+
+
  
