@@ -91,3 +91,7 @@ GROUP BY s.student_id, s.Is_present, s.group_date
 HAVING COUNT(s.group_date) >= 3;
 
 
+select Student_id, Is_present 
+from students_attend
+group by Student_id, Is_present 
+having count(*)>=3
