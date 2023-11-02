@@ -1,0 +1,59 @@
+create table entries ( 
+name varchar(20),
+address varchar(20),
+email varchar(20),
+floor int,
+resources varchar(10));
+
+insert into entries
+values
+('A','Bangalore','A@gmail.com',1,'CPU'),
+('A','Bangalore','A1@gmail.com',1,'CPU'),
+('A','Bangalore','A2@gmail.com',2,'DESKTOP'),
+('B','Bangalore','B@gmail.com',2,'DESKTOP'),('B','Bangalore','B1@gmail.com',2,'DESKTOP'),
+('B','Bangalore','B2@gmail.com',1,'MONITOR')
+;
+
+select * from entries
+with CTE as
+(
+select name, count(address) as total_visit
+from entries
+group by name
+),
+CTE_1 as
+(
+select name,floor, count(floor) as most_visited
+from entries
+group by name, floor
+),
+CTE_2 as
+(
+select name, floor
+from CTE
+where most_visited >1
+), 
+with CTE_3 as
+(
+select name, resources
+from entries
+group by name, resources
+)
+select name, STRING_AGG(resources, ',') resources_used
+from CTE_3
+group by name
+)
+
+
+
+select 
+name,
+count(address) over (partition by name),
+count(floor) over (partition by name, floor)
+from entries
+
+select name, resources from entries
+group by name, resources
+group by name,floor
+
+select
