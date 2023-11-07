@@ -15,6 +15,7 @@ values
 ;
 
 select * from entries
+
 with CTE as
 (
 select name, count(address) as total_visit
@@ -30,19 +31,27 @@ group by name, floor
 CTE_2 as
 (
 select name, floor
-from CTE
+from CTE_1
 where most_visited >1
 ), 
-with CTE_3 as
+CTE_3 as
 (
 select name, resources
 from entries
 group by name, resources
-)
+),
+CTE_4 as
+(
 select name, STRING_AGG(resources, ',') resources_used
 from CTE_3
 group by name
 )
+select C.name, C.total_visit,C2.floor, C4.resources_used
+from CTE C
+inner join CTE_2 C2
+on C.name = C2.name
+inner join CTE_4 C4
+on C2.name = C4.name
 
 
 
