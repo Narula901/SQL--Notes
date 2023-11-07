@@ -31,6 +31,28 @@ VALUES
 select * from EmployeeSalary
 
 select *,
-sum(Salary) over (partition by Emp_id order by Salary) 
+sum(Salary) over (partition by Emp_id order by [Month]) as Cumulative_Salary
 from EmployeeSalary
 
+select *,
+sum(Salary) over (order by [Month]) as Cumulative_Salary
+from EmployeeSalary
+
+
+-- Calculate cumulative sum of salary from Jan to July
+go
+WITH CTE AS (
+    SELECT
+        Emp_id,
+        [Month],
+        Salary,
+        SUM(Salary) OVER (PARTITION BY Emp_id ORDER BY [Month]) AS CumulativeSalary
+    FROM EmployeeSalary
+)
+SELECT
+    Emp_id,
+    [Month],Salary,
+    CumulativeSalary
+FROM CTE
+WHERE [Month] BETWEEN '2023-01-01' AND '2023-07-01'
+ORDER BY Emp_id, [Month];

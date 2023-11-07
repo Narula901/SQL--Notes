@@ -71,3 +71,24 @@ SELECT cte1.sales_date, total_apple - total_oranges AS diff
 FROM cte1
 INNER JOIN cte2
 ON cte1.sales_date = cte2.sales_date;
+
+
+select * from sales_tbl
+
+SELECT sales_date
+,sum(CASE
+WHEN fruits = 'apples' THEN sold_num ELSE 0 END) AS apples
+,sum(CASE
+WHEN fruits = 'oranges' THEN sold_num ELSE 0 END) AS oranges
+FROM sales_tbl
+GROUP BY sales_date
+
+select sales_date,
+sum(case when fruits = 'apples' then sold_num 
+else 0 end)
+as apples,
+sum(case when fruits = 'oranges' then sold_num 
+else 0 end)
+as Oranges
+from sales_tbl
+group by sales_date
