@@ -31,6 +31,15 @@ select *,
 count(ProductID) over (partition by CategoryID order by CategoryID) as No_of_Product_in_each_category
 from [Production].[Product]
 
+select *, 
+count(ProductID) over (partition by CategoryID order by ProductID) as No_of_Product_in_each_category
+from [Production].[Product]
+
+
+select *, 
+count(ProductID) over (partition by CategoryID order by ModelYear) as No_of_Product_in_each_category
+from [Production].[Product]
+
 --- if we take only Order by Clause it gives different results, it will take the all the rows above and down for current row context at each category ID.
 select *, 
 count(ProductID) over (order by CategoryID) as No_of_Product_in_each_category
@@ -71,7 +80,7 @@ select [Year], [Month],
 format(MonthlySales,'C2') as MonthlySales, 
 format(AnnualSales,'C2') as AnnualSales,
 format(MonthlySales/AnnualSales, 'P') as [%ofAnnualSales],
-DENSE_RANK() over (partition by [Year] order by MonthlySales desc) as Ranking
+DENSE_RANK() over (partition by [Year] order by MonthlySales desc) as Ranking ----imp
 from Year_Month_Data 
 order by [Year], [Month]
 
