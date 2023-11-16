@@ -84,6 +84,15 @@ go
 exec dbo.procGetTrackDuration 10,20
 go
 --- As we have seen that, Track_Duration is Changing Dynamically with the help of Procedure.
+--- 15-11-2023-Checking Purpose
+select *,
+		ROW_NUMBER()over(Partition by Name) as RowNumber
+		from [dbo].[Track]
+--- the function 'ROW_NUMBER' must have an OVER clause with ORDER BY.
+
+select *,
+		ROW_NUMBER()over(order by MediaTypeId) as Longest_Song_Rank
+		from [dbo].[Track]
 
 ----With the help of Row Number we can find the duplicate values, in this case find the duplicate value on the basis of Name.
 
@@ -128,6 +137,12 @@ where Title_Duration<=5
 
 ---
 select * from [dbo].[InvoiceLine]
+/*
+The SQL Server NTILE() is a window function that distributes rows of an ordered partition into a specified number of approximately equal groups, 
+or buckets. It assigns each group a bucket number starting from one. For each row in a group, 
+the NTILE() function assigns a bucket number representing the group to which the row belongs
+*/
+
 with Discount as
 (
 	select T.*, I.Quantity, NTILE(3) over(order by T.UnitPrice desc) as Category
