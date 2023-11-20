@@ -37,7 +37,7 @@ format(((Revenue - PreviousYearRevenue)/(PreviousYearRevenue)), 'P2') as YOY_Gro
 from
 CTE_1
 
-
+--- Another Method(Short-One)
 with CTE as
 (
 select YEAR(OrderDate) as [Year], 
