@@ -4,7 +4,7 @@ from DimCustomer
 Select * from DimCustomer
 
 ---------- Concatenation
-select CustomerKey, (FirstName + ' ' + MiddleName  + ' ' + LastName) as Full_Name
+select CustomerKey, (FirstName + ' ' + MiddleName  + ' ' + LastName) as Full_Name   
 from DimCustomer
 
 
@@ -199,6 +199,10 @@ select CustomerKey,
 from DimCustomer
 
 ----Question 2
+SELECT GeographyKey,City, PostalCode, 
+ COALESCE(City, PostalCode,'No color or size') AS "City Name"
+FROM DimGeography 
+
 
 
 
