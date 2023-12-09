@@ -13,9 +13,9 @@ and I.LotNo = G.LotNo
 ),
 CTE_1 as
 (
-select * ,(ItemNo + ' - ' + LotNo)as CK,
+select *,
 ROW_NUMBER() over (partition by ItemNo, LotNo order by ItemNo, LotNo) as row_no,
-DATEDIFF(day,GRNRegisteredDate, CreatedDate) as Aging_Process,
+COALESCE(DATEDIFF(day,GRNRegisteredDate, CreatedDate),400) as Aging_Process,
 case 
 when DATEDIFF(day,GRNRegisteredDate, CreatedDate)<=60 then '0-60 days'
 when DATEDIFF(day,GRNRegisteredDate, CreatedDate)>60 and DATEDIFF(day,GRNRegisteredDate, CreatedDate)<=180 then '60-180 days'
@@ -26,4 +26,5 @@ from CTE
 )
 select * from CTE_1
 where row_no = 1
+
 select * from Final_Inventory
