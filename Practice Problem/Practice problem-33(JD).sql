@@ -1,7 +1,6 @@
-create view Modified_GRN as
-select ItemNo,Client,[Description],TotalQuantity,ItemCategoryCode,GrnNumber, GRNRegisteredDate, LotNo, (ItemNo + ' - ' + LotNo)as CK
-from [dbo].[GRN Report]
 
+
+Go
 create or alter view Final_Inventory as 
 with CTE as 
 (
@@ -27,4 +26,30 @@ from CTE
 select * from CTE_1
 where row_no = 1
 
+Go
 select * from Final_Inventory
+
+Go
+create or alter view aggregate_Inventory as
+select CreatedDate,
+sum(Inventory) as [Total_Inventory]
+from [dbo].[All Inventory Data]
+group by CreatedDate
+
+Go
+select * from aggregate_Inventory
+
+
+ALTER TABLE [dbo].[Master Location]
+ADD Valid_Name NVARCHAR(MAX)
+
+select * from [dbo].[Master Location] 
+UPDATE [dbo].[Master Location]
+SET Valid_Name = 
+    CASE 
+        WHEN Client= 'JAKSON_KAROLI' THEN 'Karoli'
+        WHEN Client = 'JAKSON-MANDOLI' THEN 'Mandoli'
+        WHEN Client = 'MONOBLOCK- MANDOLI' THEN 'MonoBlock'
+        ELSE 'DefaultValue' -- You can set a default value for other cases
+    END;
+
