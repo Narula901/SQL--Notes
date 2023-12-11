@@ -53,3 +53,25 @@ SET Valid_Name =
         ELSE 'DefaultValue' -- You can set a default value for other cases
     END;
 
+
+go
+SELECT Category
+INTO Category_Sorting
+FROM Final_Inventory
+group by Category
+drop table Category_Sorting
+
+select * from Category_Sorting
+
+ALTER TABLE [dbo].[Category_Sorting]
+ADD Sorting_Order INT;
+UPDATE [dbo].[Category_Sorting]
+SET Sorting_Order = 
+    CASE 
+        WHEN Category= '0-60 days' THEN 1
+        WHEN Category = '60-180 days' THEN 2
+        WHEN Category = '180-365days' THEN 3
+        ELSE 4 -- You can set a default value for other cases
+    END;
+
+
