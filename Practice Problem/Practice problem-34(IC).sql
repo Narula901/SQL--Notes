@@ -23,6 +23,18 @@ from [dbo].[K1 & K3 (Excel)]
 
 select * from [dbo].[K1 & K3 (Excel)]
 
+---further calculation with Common table expression
+with CTE as
+(
+select *, CAST(Pallet AS INT) as FP
+from [dbo].[K1 & K3 (Excel)]
+)
+select month([Shipment Creation Date])as [Month], sum(FP) as Full_Pallet
+from CTE
+group by month([Shipment Creation Date])
+order by month([Shipment Creation Date])
+
+
 --- for view we can do this way
 select K.*, I.[CFC/Pallet] as [CFC/Pallet]
 from [dbo].[K1 & K3 (Excel)] K
