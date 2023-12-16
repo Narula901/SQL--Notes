@@ -29,17 +29,11 @@ where row_no = 1
 Go
 select * from Final_Inventory
 
-Go
-create or alter view aggregate_Inventory as
-select CreatedDate,
-sum(Inventory) as [Total_Inventory]
-from [dbo].[All Inventory Data]
-group by CreatedDate
+
+
+
 
 Go
-select * from aggregate_Inventory
-
-
 ALTER TABLE [dbo].[Master Location]
 ADD Valid_Name NVARCHAR(MAX)
 
@@ -59,10 +53,11 @@ SELECT Category
 INTO Category_Sorting
 FROM Final_Inventory
 group by Category
-drop table Category_Sorting
+----drop table Category_Sorting
 
 select * from Category_Sorting
 
+go 
 ALTER TABLE [dbo].[Category_Sorting]
 ADD Sorting_Order INT;
 UPDATE [dbo].[Category_Sorting]
@@ -75,3 +70,29 @@ SET Sorting_Order =
     END;
 
 
+go
+select * from [dbo].[All Inventroy Data]
+
+
+ALTER TABLE [dbo].[All Inventroy Data]
+ADD Created_Date_Copy  date
+
+UPDATE [dbo].[All Inventroy Data]
+SET  Created_Date_Copy = cast(CreatedDate as date)
+
+
+Go
+select * from [dbo].[Master Bin]
+
+
+ALTER TABLE [dbo].[Master Bin]
+ADD Location_Code NVARCHAR(MAX)
+
+UPDATE [dbo].[Master Location]
+SET Location_Code = 
+    CASE 
+        WHEN [Source.Name] = 'Bins(Karoli).xls' THEN 'JAKSON_KAROLI'
+        WHEN [Source.Name] = 'Bins(Mandoli).xls' THEN 'JAKSON-MANDOLI'
+        WHEN [Source.Name] = 'Bins(Mono-Block).xls' THEN 'MONOBLOCK- MANDOLI'
+        ELSE 'DefaultValue' -- You can set a default value for other cases
+    END;
