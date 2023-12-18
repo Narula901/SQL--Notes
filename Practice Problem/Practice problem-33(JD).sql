@@ -96,3 +96,14 @@ SET Location_Code =
         WHEN [Source.Name] = 'Bins(Mono-Block).xls' THEN 'MONOBLOCK- MANDOLI'
         ELSE 'DefaultValue' -- You can set a default value for other cases
     END;
+
+
+go
+select * from [dbo].[Inward Throughput]
+
+
+ALTER TABLE [dbo].[Inward Throughput]
+ADD GRN_Registered_Date_Copy  date
+
+UPDATE [dbo].[Inward Throughput]
+SET  GRN_Registered_Date_Copy = cast(GRNRegisteredDate as date)
