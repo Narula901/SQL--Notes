@@ -1,5 +1,5 @@
 
-
+----Final Inventory
 Go
 create or alter view Final_Inventory as 
 with CTE as 
@@ -33,11 +33,11 @@ select * from Final_Inventory
 
 
 
+---- Master Location
 Go
 ALTER TABLE [dbo].[Master Location]
 ADD Valid_Name NVARCHAR(MAX)
 
-select * from [dbo].[Master Location] 
 UPDATE [dbo].[Master Location]
 SET Valid_Name = 
     CASE 
@@ -57,6 +57,7 @@ group by Category
 
 select * from Category_Sorting
 
+---- Category Sorting 
 go 
 ALTER TABLE [dbo].[Category_Sorting]
 ADD Sorting_Order INT;
@@ -69,7 +70,7 @@ SET Sorting_Order =
         ELSE 4 -- You can set a default value for other cases
     END;
 
-
+---- All Inventory Data
 go
 select * from [dbo].[All Inventroy Data]
 
@@ -81,6 +82,7 @@ UPDATE [dbo].[All Inventroy Data]
 SET  Created_Date_Copy = cast(CreatedDate as date)
 
 
+---- Master Bin
 Go
 select * from [dbo].[Master Bin]
 
@@ -97,7 +99,7 @@ SET Location_Code =
         ELSE 'DefaultValue' -- You can set a default value for other cases
     END;
 
-
+----Inward Throughput
 go
 select * from [dbo].[Inward Throughput]
 
@@ -107,3 +109,16 @@ ADD GRN_Registered_Date_Copy  date
 
 UPDATE [dbo].[Inward Throughput]
 SET  GRN_Registered_Date_Copy = cast(GRNRegisteredDate as date)
+
+
+----Outward Throughput 
+go
+select * from [dbo].[Outward Throughput]
+
+
+ALTER TABLE [dbo].[Outward Throughput]
+ADD Ship_Date_Copy  date
+
+UPDATE [dbo].[Outward Throughput]
+SET  Ship_Date_Copy = cast([SHIP DATE] as date)
+
