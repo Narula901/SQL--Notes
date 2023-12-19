@@ -122,3 +122,5 @@ ADD Ship_Date_Copy  date
 UPDATE [dbo].[Outward Throughput]
 SET  Ship_Date_Copy = cast([SHIP DATE] as date)
 
+----
+
