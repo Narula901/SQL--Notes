@@ -44,3 +44,7 @@ on K.[Brand Code] = I.Item
 select * from [dbo].[Item Master]
 
 
+
+-----
+-----
+
