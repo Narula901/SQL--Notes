@@ -79,3 +79,6 @@ set ProductCategory = B.Name
 from #ProductsSold2011 A
 join [Production].[Category] B
 on A.ProductCategoryID = B.CategoryID
+
+
+---Indexes
