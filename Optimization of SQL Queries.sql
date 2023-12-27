@@ -22,7 +22,7 @@ from [Sales].[Order]
 where OrderDate >'2010-12-31' 
 and OrderDate < '2012-01-01'
 group by OrderId, OrderDate 
-having count(*)=1
+having count(*)=1    
 */
 
 select * from #Sales2012
@@ -39,11 +39,11 @@ OrderDate Date,
 LineTotal Money,
 ProductID int,
 ProductName varchar(64),
-ProductSubcategoryID int,
-ProductSubcategory varchar(64),
 ProductCategoryID int,
 ProductCategory varchar(64)
 )
+
+DROP TABLE #ProductsSold2011
 
 insert into #ProductsSold2011
 (
@@ -65,3 +65,17 @@ on A.SalesOrderID = B.OrderID
 
 
 select * from #ProductsSold2011
+
+update #ProductsSold2011
+set ProductName = B.Name,
+ProductcategoryID = B.CategoryID
+from #ProductsSold2011 A
+join [Production].[Product] B
+on A.ProductID = B.ProductID
+
+
+update #ProductsSold2011
+set ProductCategory = B.Name
+from #ProductsSold2011 A
+join [Production].[Category] B
+on A.ProductCategoryID = B.CategoryID

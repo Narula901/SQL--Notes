@@ -122,7 +122,27 @@ ADD Ship_Date_Copy  date
 UPDATE [dbo].[Outward Throughput]
 SET  Ship_Date_Copy = cast([SHIP DATE] as date)
 
-----
 
------
+
+----StartEnd Invetory item wise data
+select * from [dbo].[StartEND Inventory Item-Wise]
+
+ALTER TABLE [dbo].[StartEND Inventory Item-Wise]
+ADD Created_Date_Copy  date
+
+UPDATE [dbo].[StartEND Inventory Item-Wise]
+SET  Created_Date_Copy = cast(CreatedDate as date)
+
+select * from [dbo].[StartEND Inventory Item-Wise]
+
+
+----Sales Report
+
+ALTER TABLE [dbo].[Sales Report]
+ADD Ship_Date_Copy  date
+
+UPDATE [dbo].[Sales Report]
+SET  Ship_Date_Copy = cast([SHIP DATE] as date)
+
+select * from [dbo].[Sales Report]
 
