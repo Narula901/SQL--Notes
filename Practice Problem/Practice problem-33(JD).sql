@@ -4,7 +4,8 @@ Go
 create or alter view Final_Inventory as 
 with CTE as 
 (
-select I.LocationCode, I.ItemNo, I.ItemCategoryCode, I.Inventory, I.CreatedDate, I.LotNo, G.GRNRegisteredDate, G.ItemNo as GRNItemNo
+select I.LocationCode, I.ItemNo, I.ItemCategoryCode, I.Inventory, I.CreatedDate, I.LotNo, G.GRNRegisteredDate, G.ItemNo as GRNItemNo, 
+cast(G.GRNRegisteredDate as date) GRN_Copy_Date
 from [dbo].[Inventory Item-wise] I
 left outer join [dbo].[GRN Report] G
 on I.ItemNo = G.ItemNo
@@ -145,4 +146,12 @@ UPDATE [dbo].[Sales Report]
 SET  Ship_Date_Copy = cast([SHIP DATE] as date)
 
 select * from [dbo].[Sales Report]
+
+
+---GRN Report 
+ALTER TABLE [dbo].[GRN Report]
+ADD GRN_Date_Copy  date
+
+UPDATE [dbo].[GRN Report]
+SET  GRN_Date_Copy = cast(GRNRegisteredDate as date)
 

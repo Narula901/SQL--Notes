@@ -1,4 +1,4 @@
-
+-----Optimizing with update part 1 and 2
 
 create table #Sales2012
 (
@@ -81,4 +81,38 @@ join [Production].[Category] B
 on A.ProductCategoryID = B.CategoryID
 
 
----Indexes
+----An Improved EXISTS With UPDATE
+create table #Sales
+(
+OrderID int,
+OrderDate date,
+LineTotal Money
+)
+
+insert into #Sales 
+(
+OrderID,
+OrderDate
+)
+
+select 
+OrderID,
+OrderDate
+from [Sales].[Order]
+
+select * from #Sales
+
+update #Sales
+set LineTotal = B.LineTotal 
+from #Sales A
+   join [Sales].[OrderItem] B
+   on A.OrderID = B.OrderID
+where B.LineTotal>10000
+
+select * from #Sales
+where LineTotal is null
+
+select * from #Sales
+where LineTotal is not null
+order by OrderID
+
