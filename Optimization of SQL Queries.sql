@@ -116,3 +116,5 @@ select * from #Sales
 where LineTotal is not null
 order by OrderID
 
+----
+
