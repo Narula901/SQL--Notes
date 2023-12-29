@@ -83,22 +83,7 @@ UPDATE [dbo].[All Inventroy Data]
 SET  Created_Date_Copy = cast(CreatedDate as date)
 
 
----- Master Bin
-Go
-select * from [dbo].[Master Bin]
 
-
-ALTER TABLE [dbo].[Master Bin]
-ADD Location_Code NVARCHAR(MAX)
-
-UPDATE [dbo].[Master Location]
-SET Location_Code = 
-    CASE 
-        WHEN [Source.Name] = 'Bins(Karoli).xls' THEN 'JAKSON_KAROLI'
-        WHEN [Source.Name] = 'Bins(Mandoli).xls' THEN 'JAKSON-MANDOLI'
-        WHEN [Source.Name] = 'Bins(Mono-Block).xls' THEN 'MONOBLOCK- MANDOLI'
-        ELSE 'DefaultValue' -- You can set a default value for other cases
-    END;
 
 ----Inward Throughput
 go
@@ -154,4 +139,29 @@ ADD GRN_Date_Copy  date
 
 UPDATE [dbo].[GRN Report]
 SET  GRN_Date_Copy = cast(GRNRegisteredDate as date)
+
+--- Master Bin 
+ALTER TABLE [dbo].[Master Bin]
+ADD Candidate_Key NVARCHAR(MAX)
+
+UPDATE [dbo].[Master Bin]
+SET Candidate_Key = [BIN CODE] + '-' + [Warehouse Name]
+   from [dbo].[Master Bin]
+
+
+------Binwise
+ALTER TABLE [dbo].[Binwise]
+ADD Candidate_Key NVARCHAR(MAX)
+
+UPDATE [dbo].[Binwise]
+SET Candidate_Key = BinCode + '-' + LocationCode
+   from [dbo].[Binwise]
+
+----Inventory bin-wise 
+ALTER TABLE [dbo].[Invnentory Bin Wise]
+ADD Candidate_Key NVARCHAR(MAX)
+
+UPDATE [dbo].[Invnentory Bin Wise]
+SET Candidate_Key = BinCode + '-' + LocationCode
+   from [dbo].[Invnentory Bin Wise]
 
