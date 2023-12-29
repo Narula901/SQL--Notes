@@ -188,6 +188,80 @@ Create nonclustered index ProductID on #ProductsSold2011(ProductID)
 
 Create nonclustered index ProductCategoryID on #ProductsSold2011(ProductCategoryID)
 
+-----------------------------------------------------------------------------------------------------------------------
+
+---Look table
+create table [Jatin_Sir_data].dbo.calender
+(
+DateValue Date,
+DayOfWeekNumber int,
+DayOfWeekName varchar(32),
+DayOfMonthNumber int,
+Monthnumber int,
+YearNumber int,
+WeekendFlag tinyint,
+HolidayFlag tinyint
+)
+
+use [Jatin_Sir_data]
+go 
+--DROP TABLE calender
+
+select * from calender
+
+use [Jatin_Sir_data]
+go 
+
+with Dates as
+(
+select 
+cast('01-01-2011' as date) as MyDate
+
+union all
+
+select 
+DATEADD(day,1,MyDate)
+from Dates
+where MyDate < cast('12-31-2030' as Date)
+)
+
+insert into [Jatin_Sir_data].dbo.calender
+(
+DateValue
+)
+select 
+MyDate
+
+from Dates
+option (MAXRECURSION 10000)
+
+update calender
+set 
+DayOfWeekNumber = DATEPART(WEEKDAY, DateValue),
+DayOfWeekName = FORMAT(DateValue, 'dddd'),
+DayOfMonthNumber = DAY(DateValue),
+Monthnumber = MONTH(DateValue),
+YearNumber = YEAR(DateValue)
+
+select * from calender
+
+update calender
+set 
+WeekendFlag = 
+  Case
+     when DayOfWeekName in ('Saturday', 'Sunday') then 1
+	 else 0
+  end
+
+update calender
+set 
+HolidayFlag = 
+  Case
+     when DayOfMonthNumber = 1 and Monthnumber = 1 then 1
+	 else 0
+  end
+
+
 
 
 
