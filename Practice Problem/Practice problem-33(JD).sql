@@ -29,7 +29,7 @@ where row_no = 1
 
 Go
 select * from Final_Inventory
-
+order by Aging_Process asc
 
 
 
@@ -164,4 +164,23 @@ ADD Candidate_Key NVARCHAR(MAX)
 UPDATE [dbo].[Invnentory Bin Wise]
 SET Candidate_Key = BinCode + '-' + LocationCode
    from [dbo].[Invnentory Bin Wise]
+
+
+---Create Sales_GRN_Date_Duration
+
+create view Sales_GRN_Date_Duration as
+with CTE as
+(
+select I.No,G.ItemNo, G.GrnNumber,G.GRNRegisteredDate,G.LotNo, S.[SHIP DATE], S.SKU, S.LotNo as SalesLotNo
+from [dbo].[Master Item] I
+inner join [dbo].[GRN Report] G
+on I.No = G.ItemNo
+inner join [dbo].[Sales Report] S
+on G.ItemNo = S.SKU
+and G.LotNo = S.LotNo
+---order by LotNO
+)
+select ItemNo, LotNo, GRNRegisteredDate,[SHIP DATE], SKU, SalesLotNo,
+DATEDIFF(day,GRNRegisteredDate,[SHIP DATE]) as days
+from CTE
 
