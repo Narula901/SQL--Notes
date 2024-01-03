@@ -184,3 +184,27 @@ select ItemNo, LotNo, GRNRegisteredDate,[SHIP DATE], SKU, SalesLotNo,
 DATEDIFF(day,GRNRegisteredDate,[SHIP DATE]) as days
 from CTE
 
+
+-----create FSN_Category
+Create or alter view FSN_Category as 
+
+with FSN as
+(
+select SKU, sum(Quantity) Total_QTY,  COUNT(distinct(OrderDate)) OrderdateCount
+from [dbo].[Sales Report]
+group by SKU
+),
+CTE as
+(
+select *, ((0.3*Total_QTY) + (0.7*OrderdateCount)) as Weight_order
+from FSN
+)
+select *,
+case 
+	when Weight_order >=23.2 then 'Fast-Moving'
+	when Weight_order > 2 and Weight_order <23.2 then 'Slow-Moving'
+	else 'Non-Moving'
+	end as Category
+from 
+CTE
+
