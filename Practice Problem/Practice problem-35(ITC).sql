@@ -70,3 +70,4 @@ from CTE_1
 select * from OutwardThroughputK2
 
 
+-----
