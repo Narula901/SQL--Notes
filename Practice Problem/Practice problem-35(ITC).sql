@@ -131,18 +131,15 @@ Zone
 select distinct [Status] from Truck_Placed_Vendor
 ------------------------------------------------------------------
 
------------------
+-----------------Sales Report 
+create or alter view Sale_Data as
 with CTE as 
 (
-select *, 
-DATEDIFF(DAY,[WSP Return Recd Date], [Mail intimation sent to branch Date & So Creation]) as[So Creation in Days],
-DATEDIFF(DAY, [Mail intimation sent to branch Date & So Creation],[PGR Done by WSP date]) as [DO Execution in Days]
-from [Sales Data]
-)
-select *,
-with CTE as 
-(
-select *, 
+select [WSP Return Recd Date], [Mail intimation sent to branch Date & So Creation], 
+[SO Number], [DO Number], 
+[PGR Done by WSP date], [Shipmnet No.], 
+[Party],[SKU Code], [Reason as mentioned by the Customer] as Reason,
+[Book Qty], [Book CFC], 
 DATEDIFF(DAY,[WSP Return Recd Date], [Mail intimation sent to branch Date & So Creation]) as[So Creation in Days],
 DATEDIFF(DAY, [Mail intimation sent to branch Date & So Creation],[PGR Done by WSP date]) as [DO Execution in Days]
 from [Sales Data]
@@ -153,12 +150,122 @@ case
 	when [So Creation in Days] =2 then '2 days'
 	when [So Creation in Days] =3 then '3 days'
 	else 'More than 3 days'
-end as [Category(SO CID)]
+end as [Category(SO CID)],
+case 
+	when [DO Execution in Days] <=1 then '0-1 days'
+	when[DO Execution in Days]=2 then '2 days'
+	when [DO Execution in Days] =3 then '3 days'
+	else 'More than 3 days'
+end as [Category(Do EID)],
+cast([WSP Return Recd Date] as Date) [WSP_Return_Date_Copy]
 from CTE
 
-end as [Category(SO CID)]
+select * from Sale_Data
+
+select * from [dbo].[Sales Data]
+-------------------------------------------------------------------------------------
+
+-------- Match_Box
+create or alter view Match_Box as
+
+with CTE as 
+(
+select cast([Shipment Creation Date]as Date) as [Shipment Creation Date] , [Shipment No], 
+sum([DO Qty(Total CFC)]) as [Do QTY], sum([Pallet]) as [Pallet]
+from [dbo].[OutwardThroughputK1K3]
+where[Division] = 'MT'
+group by [Shipment Creation Date], [Shipment No]
+),
+CTE_1 as
+(
+select *, CEILING([Pallet]) as [No. of Trips]
 from CTE
+)
+select *, ([No. of Trips]*0.18) as Manhour
+from CTE_1
+
+----------------------------------------------
+
+---------Detention_Gate_in_to_GR_Performance 
+
+create or alter view Detention_GR_Data as
+
+with CTE as
+(
+select * 
+from [dbo].[yrv126dumpju-sep]
+where [Reporting Date] is not null
+),
+CTE_1 as
+(
+select *, ([Agreed TIT] - [Actual TIT]) TIT_Difference, CONVERT(Time, [Reporting Time]) as [Updated Reporting Time]
+from CTE
+),
+CTE_2 as
+(
+select *, 
+case 
+	when TIT_Difference < 0 then 0
+	else TIT_Difference	
+	end Variance,
+case
+	when [Actual Unloading Dat] is null then [ GR Date]
+	else [Actual Unloading Dat]
+	end [New Unloading Date],
+case
+	when [Updated Reporting Time] > '14:00:00' then dateadd(day, 1, [Reporting Date])
+	else [Reporting Date]
+	end [New Reporting Date]
+from CTE_1
+),
+CTE_3 as
+(
+select *, FORMAT([New Reporting Date], 'dddd') AS [Week Name]
+from CTE_2
+),
+CTE_4 as
+(
+select *,
+case
+	when [Week Name] = 'Sunday' then dateadd(day, 1, [New Reporting Date]) 
+	else [New Reporting Date] 
+	end [Final Reporting Date],
+dateadd(day, [Variance],[New Reporting Date]) as [Last Reporting Date]
+from CTE_3
+),
+CTE_5 as
+(
+select *,
+case
+when
+	DATEDIFF(day,[New Unloading Date], [Last Reporting Date])<0 then 0
+	else DATEDIFF(day,[New Unloading Date], [Last Reporting Date])
+	end [Detention Days],
+case
+when
+	DATEDIFF(day, [ GR Date], [Last Reporting Date])<0 then 0
+	else DATEDIFF(day, [ GR Date], [Last Reporting Date])
+	end  [GR days]
+from CTE_4
+),
+CTE_6 as
+(
+select *,  
+case 
+	when [Detention Days] = 0 then 'Same Day'
+	when [Detention Days] = 1 then 'Next Day'
+	else 'Delayed'
+	end [DD Performace],
+case 
+	when [GR days] = 0 then 'Same Day'
+	when [GR days] =1 then 'Next Day'
+	else 'Delayed'
+	end [GR Performace]
+from CTE_5
+)
+select * from CTE_6
 
 
---------
+
+
 
