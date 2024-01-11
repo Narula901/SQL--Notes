@@ -277,6 +277,8 @@ group by [Shipment no], [Truck No]
 select * from Detention_K2_In_Out
 
 
+---------
+
 
 
 
