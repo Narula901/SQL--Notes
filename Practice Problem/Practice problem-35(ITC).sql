@@ -265,7 +265,16 @@ from CTE_5
 )
 select * from CTE_6
 
--------
+-----------------------------------
+
+-------Detention_K2_In_Out
+create or alter view Detention_K2_In_Out as
+select [Shipment no], [Truck No], 
+sum(CFC) as CFC, sum([    Quantity]) as Quantity 
+from [dbo].[K2 Inward & Outward]
+group by [Shipment no], [Truck No]
+
+select * from Detention_K2_In_Out
 
 
 
