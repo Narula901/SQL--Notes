@@ -276,8 +276,44 @@ group by [Shipment no], [Truck No]
 
 select * from Detention_K2_In_Out
 
+---------------------------------------------------------------------------------------------------------------
 
----------
+---------On_Time_Execution
+
+
+create or alter view On_Time_Execution as
+with CTE_1 as
+(
+select [Shipment No], [Ship-To-Party Name], 
+CONVERT(Time,[Do execution Time]) as [Do execution Time],
+[DO Execution Date], [Shipment Creation Date], CAST([Shipment Creation Date] as date) as Shipment_Creation_Date_Copy,
+[DO Qty(Total CFC)], [Vendor Name]
+from [dbo].[K1 & K3 (All Data)]
+),
+CTE_2 as 
+(
+select *,
+case 
+	when [DO Execution Date] = [Shipment Creation Date] then [DO Execution Date]
+	when [Do execution Time] <= '06:00:00' or [Do execution Time] is null then DATEADD(day,-1,[DO Execution Date])
+	when [Do execution Time] > '06:00:00' and [Do execution Time] <= '11:00:00' then [DO Execution Date]
+	else DATEADD(day,1,[DO Execution Date])
+	end [New DO Execution Date]
+from CTE_1
+),
+CTE_3 as 
+(
+select *, DATEDIFF(DAY, [Shipment Creation Date],[New DO Execution Date]) as Days
+from CTE_2
+)
+select * ,
+case 
+	when Days <=0 then 'D-1'
+	when Days =1 then 'D'
+	else 'D+1'
+	end Category
+from CTE_3
+
 
 
 
