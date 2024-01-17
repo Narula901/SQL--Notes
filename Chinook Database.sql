@@ -24,4 +24,3 @@ select * from [dbo].[Test]
 
 select * from [dbo].[Track]
 
-select * from [dbo].[Customer]
