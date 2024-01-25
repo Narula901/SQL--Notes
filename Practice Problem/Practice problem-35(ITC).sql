@@ -12,6 +12,7 @@ select max([Pstng Date]), min([Pstng Date]) from [dbo].[K2 Inward & Outward]
 select * from [dbo].[Item Master]
 ------------[K1 & K3 (All Data)] and Item Master
 create or alter View OutwardThroughputK1K3 as
+
 with outwardthroughput as
 (
 select * 
