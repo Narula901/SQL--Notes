@@ -22,7 +22,7 @@ on K.[Brand Code] = IM.Item
 ),
 CTE as
 (
-select *, ([DO Qty(Total CFC)])/([CFC/Pallet]) Pallet
+select *, (cast([DO Qty(Total CFC)] as decimal(10,5)))/(cast([CFC/Pallet] as decimal (10,5))) Pallet
 from outwardthroughput
 ),
 CTE_1 as 
@@ -236,7 +236,7 @@ from CTE_3
 ),
 CTE_5 as
 (
-select *,
+select * , 
 case
 when
 	DATEDIFF(day,[New Unloading Date], [Last Reporting Date])<0 then 0
@@ -248,7 +248,10 @@ when
 	else DATEDIFF(day, [ GR Date], [Last Reporting Date])
 	end  [GR days]
 from CTE_4
-),
+)
+
+select * from CTE_5
+,
 CTE_6 as
 (
 select *,  
