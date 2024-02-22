@@ -28,3 +28,11 @@ select Top 3 ShipCountry, AVG(Freight) [Average Freight]
 from [dbo].[Orders]
 group by ShipCountry
 order by AVG(Freight) desc
+
+
+select Top 3 ShipCountry, AVG(Freight) [Average Freight]
+from [dbo].[Orders]
+where OrderDate > '1997-07-04'
+group by ShipCountry
+order by AVG(Freight) desc
+
