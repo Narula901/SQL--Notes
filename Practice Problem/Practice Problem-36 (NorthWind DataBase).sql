@@ -23,3 +23,8 @@ select CustomerID,  CompanyName, Region
 from [dbo].[Customers]
 group by CustomerID,  CompanyName, Region
 order by Region desc
+
+select Top 3 ShipCountry, AVG(Freight) [Average Freight]
+from [dbo].[Orders]
+group by ShipCountry
+order by AVG(Freight) desc
