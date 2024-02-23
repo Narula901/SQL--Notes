@@ -5,7 +5,7 @@ from [dbo].[Categories] C
 inner join [dbo].[Products] P
 on P.CategoryID = C.CategoryID
 group by C.CategoryName
-
+	
 
 select ProductID, ProductName,UnitsInStock, ReorderLevel
 from [dbo].[Products]
@@ -32,7 +32,8 @@ order by AVG(Freight) desc
 
 select Top 3 ShipCountry, AVG(Freight) [Average Freight]
 from [dbo].[Orders]
-where OrderDate > '1997-07-04'
+where OrderDate > '1996-01-01'
+and OrderDate <= '1997-01-01'
 group by ShipCountry
 order by AVG(Freight) desc
 
