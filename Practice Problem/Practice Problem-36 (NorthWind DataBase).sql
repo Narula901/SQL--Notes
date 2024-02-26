@@ -60,3 +60,35 @@ group by ShipCountry
 order by avg(Freight) desc
 
 --------------------------------------------------------------------------------------------------------
+
+--Problem-30 
+
+select C.CustomerID, O.CustomerID
+from [dbo].[Customers] C
+left outer join [dbo].[Orders] O
+on C.CustomerID = O.CustomerID
+where O.CustomerID is null
+
+
+
+--Problem-31
+
+---CTE Method
+with CTE as 
+(
+select CustomerID from  [dbo].[Orders]
+where EmployeeID = 4
+)
+select C.CustomerID, CT.CustomerID
+from [dbo].[Customers] C
+left outer join CTE CT
+on C.CustomerID = CT.CustomerID
+where  CT.CustomerID is null
+
+----Normal Method
+select C.CustomerID, O.CustomerID
+from [dbo].[Customers] C
+left outer join [dbo].[Orders] O
+on C.CustomerID = O.CustomerID
+and O.EmployeeID = 4
+where O.CustomerID is null
