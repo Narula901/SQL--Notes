@@ -37,3 +37,26 @@ and OrderDate <= '1997-01-01'
 group by ShipCountry
 order by AVG(Freight) desc
 
+-------------------problem 28
+with CTE_1 as
+(
+select ShipCountry, Freight, OrderDate,
+dateadd(year, -1, max(OrderDate) over ()) LastYearDate
+from [dbo].[Orders]
+)
+select top 3 ShipCountry, AVG(Freight)
+from CTE_1
+where OrderDate >= LastYearDate
+group by ShipCountry
+order by AVG(Freight) desc
+
+
+-- we can do with the help of subquery
+
+select top 3 ShipCountry, avg(Freight)
+from [dbo].[Orders]
+where OrderDate >= dateadd(year, -1, (select max(OrderDate) from [dbo].[Orders]))
+group by ShipCountry
+order by avg(Freight) desc
+
+--------------------------------------------------------------------------------------------------------
