@@ -36,6 +36,7 @@ from CTE
 )
 select *
 from CTE_1
+
 select * from OutwardThroughputK1K3
 
 ------[K2 Inward & Outward] and Item Master
@@ -143,7 +144,7 @@ select [WSP Return Recd Date], [Mail intimation sent to branch Date & So Creatio
 [Book Qty], [Book CFC], 
 DATEDIFF(DAY,[WSP Return Recd Date], [Mail intimation sent to branch Date & So Creation]) as[So Creation in Days],
 DATEDIFF(DAY, [Mail intimation sent to branch Date & So Creation],[PGR Done by WSP date]) as [DO Execution in Days]
-from [Sales Data]
+from [dbo].[Sale Data]
 )
 select *,
 case 
@@ -248,10 +249,7 @@ when
 	else DATEDIFF(day, [ GR Date], [Last Reporting Date])
 	end  [GR days]
 from CTE_4
-)
-
-select * from CTE_5
-,
+),
 CTE_6 as
 (
 select *,  
@@ -276,6 +274,7 @@ create or alter view Detention_K2_In_Out as
 select [Shipment no], [Truck No], 
 sum(CFC) as CFC, sum([    Quantity]) as Quantity 
 from [dbo].[K2 Inward & Outward]
+where [Shipment no] is not null
 group by [Shipment no], [Truck No]
 
 select * from Detention_K2_In_Out
