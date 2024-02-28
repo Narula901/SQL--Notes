@@ -92,3 +92,35 @@ left outer join [dbo].[Orders] O
 on C.CustomerID = O.CustomerID
 and O.EmployeeID = 4
 where O.CustomerID is null
+
+
+----Problem - 32
+select C.CustomerID, C.CompanyName,
+OD.OrderID,sum(OD.UnitPrice*OD.Quantity) as Total_Order_Amount  
+from [dbo].[Customers] C
+inner join [dbo].[Orders] O
+on C.CustomerID = O.CustomerID
+inner join [dbo].[Order Details] OD
+on O.OrderID = OD.OrderID
+where o.OrderDate >'1996-12-31'
+and o.OrderDate <= '1997-12-31'
+group by  C.CustomerID, C.CompanyName,OD.OrderID
+having sum(OD.UnitPrice*OD.Quantity)>10000
+order by Total_Order_Amount desc
+
+---Problem 34
+select C.CustomerID, C.CompanyName,
+OD.OrderID,round(sum(OD.UnitPrice*OD.Quantity*(1-OD.Discount)),2) as Totals_With_Discount,
+sum(OD.UnitPrice*OD.Quantity) Totals_Without_Discount
+from [dbo].[Customers] C
+inner join [dbo].[Orders] O
+on C.CustomerID = O.CustomerID
+inner join [dbo].[Order Details] OD
+on O.OrderID = OD.OrderID
+where o.OrderDate >'1996-12-31'
+and o.OrderDate <= '1997-12-31'
+group by  C.CustomerID, C.CompanyName,OD.OrderID
+having sum(OD.UnitPrice*OD.Quantity)>10000
+order by Totals_Without_Discount desc
+
+
