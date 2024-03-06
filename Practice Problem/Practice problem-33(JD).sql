@@ -1,4 +1,8 @@
 
+select * from [dbo].[Inventory Item-wise]
+
+select * from [dbo].[All Inventroy Data]
+
 ----Final Inventory
 Go
 create or alter view Final_Inventory as 
