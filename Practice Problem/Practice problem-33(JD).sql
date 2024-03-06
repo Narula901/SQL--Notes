@@ -91,7 +91,7 @@ SET  Created_Date_Copy = cast(CreatedDate as date)
 
 ----Inward Throughput
 go
-select * from [dbo].[Inward Throughput]
+select max(GRNRegisteredDate), min(GRNRegisteredDate) from [dbo].[Inward Throughput]
 
 
 ALTER TABLE [dbo].[Inward Throughput]
@@ -103,7 +103,9 @@ SET  GRN_Registered_Date_Copy = cast(GRNRegisteredDate as date)
 
 ----Outward Throughput 
 go
-select * from [dbo].[Outward Throughput]
+select max([SHIP DATE]),
+min([SHIP DATE]) 
+from [dbo].[Outward Throughput]
 
 
 ALTER TABLE [dbo].[Outward Throughput]
@@ -134,7 +136,7 @@ ADD Ship_Date_Copy  date
 UPDATE [dbo].[Sales Report]
 SET  Ship_Date_Copy = cast([SHIP DATE] as date)
 
-select * from [dbo].[Sales Report]
+select max([SHIP DATE]) from [dbo].[Sales Report]
 
 
 ---GRN Report 
