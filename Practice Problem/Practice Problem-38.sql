@@ -14,6 +14,7 @@ insert into brands values (
 (2019, 'Nokia', 17000),
 (2020, 'Nokia', 14000);
 
+-----------1st Method
 with CTE as 
 (
 select *,
@@ -31,6 +32,39 @@ from CTE
 )
 select  * from CTE_1
 where CNT = Plus
+
+------------------------2nd Method
+with CTE as 
+(
+select *,lag(amount,1,0) over (partition by brand order by [year]) lag_value,
+(amount - lag(amount,1,0) over (partition by brand order by [year])) as Price_Value
+from brands
+)
+select [year], brand, amount
+from CTE
+where brand not in (select distinct brand from CTE where Price_Value <0)
+
+
+
+-------3rd Method
+with CTE as
+(
+select *,lead(amount,1,amount) over (partition by brand order by [year]) lead_value,
+(lead(amount,1,amount) over (partition by brand order by [year])- amount) as Price_Value
+from brands
+)
+select [year], brand, amount
+from CTE
+where brand not in (select brand from CTE where Price_Value <0 group by brand)
+
+
+
+
+select [year], brand, amount
+from CTE
+where brand not in (select brand from CTE where Price_Value <0 group by brand)
+
+
 
 
 
