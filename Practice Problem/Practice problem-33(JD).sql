@@ -174,7 +174,7 @@ SET Candidate_Key = BinCode + '-' + LocationCode
 
 ---Create Sales_GRN_Date_Duration
 
-create view Sales_GRN_Date_Duration as
+create or alter view Sales_GRN_Date_Duration as
 with CTE as
 (
 select I.No,G.ItemNo, G.GrnNumber,G.GRNRegisteredDate,G.LotNo, S.[SHIP DATE], S.SKU, S.LotNo as SalesLotNo
