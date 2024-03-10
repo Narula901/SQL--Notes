@@ -103,39 +103,19 @@ JOIN (
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
-
-SELECT trans_id, trans_date
-FROM [Transaction]
-WHERE (trans_date, trans_amount) IN (
-  SELECT trans_date, MAX(trans_amount)
-  FROM [Transaction]
-  GROUP BY DATE_FORMAT(trans_date, '%Y-%m')
-);
-
-
-select * from [Transaction]
-go
-
+---Easy and convenient method
 with CTE as 
 (
-select trans_date , month(trans_date) mon, trans_amount
+select MONTH(trans_date) [Month], max(trans_amount) Amount
 from [Transaction]
-),
-CTE_1 as
-(
-select mon,max(trans_amount) as maxi
-from CTE
-group by mon
+group by MONTH(trans_date)
 )
-select C.trans_date, C.mon, C.trans_amount
-from CTE C
-inner join CTE_1 P
-on C.mon = P.mon
-where C.trans_amount = P.maxi
+select C.[Month], T.trans_id, C.Amount, T.trans_date
+from [Transaction] T
+Right outer join CTE C
+on C.[Month] = Month(T.trans_date)
+and C.Amount = T.trans_amount
 
-select *,
-max(trans_amount) over (partition by month(trans_date) order by month(trans_date)) as maxi
-from [Transaction]
 
 
 
