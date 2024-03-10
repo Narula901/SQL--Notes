@@ -124,3 +124,19 @@ having sum(OD.UnitPrice*OD.Quantity)>10000
 order by Totals_Without_Discount desc
 
 
+---Problem 35
+select OrderID,EmployeeID, 
+EOMONTH(OrderDate) as EndMonthDate
+from [dbo].[Orders] 
+group by OrderID,EmployeeID, EOMONTH(OrderDate)
+order by EmployeeID, OrderID
+
+
+---Problem 36
+select Top 10 OrderID, Count(*) as Total_Orders_Details
+from [dbo].[Order Details]
+group by OrderID
+order by Total_Orders_Details desc
+
+
+
