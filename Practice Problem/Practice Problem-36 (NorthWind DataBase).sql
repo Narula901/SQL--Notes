@@ -138,5 +138,11 @@ from [dbo].[Order Details]
 group by OrderID
 order by Total_Orders_Details desc
 
+---Problem 37
+Select top 2 percent
+OrderID
+From Orders
+Order By NewID()
+
 
 
