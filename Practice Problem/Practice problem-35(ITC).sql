@@ -318,5 +318,19 @@ case
 from CTE_3
 
 ---------------------------------------------------------------------------------------------------------------------------------
+---Attendence Reprt
 
-s
+alter table [dbo].[Attendence]
+Add department varchar(30)
+
+update [dbo].[Attendence]
+set department = 
+case
+when Designation = 'HRT' or Designation =  'BOPT' then  'BOPT+HRT'
+when Designation = 'Dock Supervisor' then 'Dock Supervisor'
+when Designation = 'WMS Operator +MIS' then 'WMS Operator +MIS'
+else 'Others'
+end
+----------------------------------------------------------------------------------------
+
+select max([Date])from  [dbo].[Attendence]
