@@ -27,3 +27,11 @@ VALUES
 
  select *, year(dob) from emp
  where year(dob) + 60 <=2024
+
+
+ select * from emp
+
+ select Emp_name, dob from emp
+ group by Emp_name,dob
+ having DATEDIFF(year, dob, '01-01-2024')>=60
+ order by dob desc
