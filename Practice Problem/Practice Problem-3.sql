@@ -35,3 +35,8 @@ VALUES
  group by Emp_name,dob
  having DATEDIFF(year, dob, '01-01-2024')>=60
  order by dob desc
+
+-----Efficeint One 
+ select * from emp
+ where  DATEDIFF(year, dob, '01-01-2024')>=60
+ order by dob desc
