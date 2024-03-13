@@ -36,7 +36,7 @@ Abs(datediff(day,OrderDate,lead(OrderDate) over (partition by CustomerID order b
 end [Difference]
 from orders 
 )
-select CustomerID, sum([Difference]), count(*)
+select CustomerID, sum([Difference]) Sum_Term , count(*) Count_Term
 from CTE
 group by CustomerID
 having count(*) = sum([Difference])
