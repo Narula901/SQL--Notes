@@ -11,7 +11,7 @@ INSERT INTO icc_world_cup values('SA','Eng','Eng');
 INSERT INTO icc_world_cup values('Eng','NZ','NZ');
 INSERT INTO icc_world_cup values('Aus','India','India');
 
-select *from icc_world_cup
+select * from icc_world_cup
 
 /*
 Write a query to produce the output from icc_world_cup table.
@@ -54,6 +54,39 @@ from CTE_3
 )
 select *,(Total_matches_played - No_of_Wins) No_of_Loss
 from CTE_4
+
+
+
+-----Same Process as i used earlier but a compact one
+
+
+with CTE as
+(
+select Team_1, count(*) as cnt
+from icc_world_cup
+group by Team_1
+union all
+select Team_2, count(*) as cnt
+from icc_world_cup
+group by Team_2
+),
+Total_Matches_Played as
+(
+select Team_1 as Team, sum(cnt) as Total_Matches_Played 
+from CTE
+group by Team_1
+),
+Win_Count as
+(
+select Winner, count(*) win_cnt 
+from icc_world_cup
+group by Winner
+)
+select T.Team, T.Total_Matches_Played, COALESCE(W.win_cnt,0) No_of_win,
+COALESCE((T.Total_Matches_Played-W.win_cnt),T.Total_Matches_Played) No_of_losses
+from Total_Matches_Played T
+left outer Join Win_Count W
+on T.Team = W.Winner
 
 
 
