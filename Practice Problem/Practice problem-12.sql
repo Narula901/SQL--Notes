@@ -56,6 +56,32 @@ group by [user_id]
 )
 
 
+select [user_id]
+from [dbo].[iphone_tbl]
+group by  [user_id]
+having count(*)= sum(case when model = 'iphone 15' then 1 else 0 end)
+
+select * from [dbo].[iphone_tbl]
+
+---Solve it Using Subquery
+select * from [dbo].[iphone_tbl]
+where model = 'iphone 15'
+and [user_id] in (select [user_id] from [dbo].[iphone_tbl] group by [user_id] having count(*) = 1)
+
+
+----Solve it with Join
+with CTE as 
+(
+select [user_id]
+from [dbo].[iphone_tbl]
+group by [user_id]
+having count(*) = 1
+)
+select P.[user_id], P.model
+from [dbo].[iphone_tbl] P
+inner join CTE C 
+on P.[user_id] = C.[user_id]
+where P.model = 'iphone 15'
 
 
  
