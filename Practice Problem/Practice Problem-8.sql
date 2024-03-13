@@ -80,3 +80,17 @@ from iphone_tbl
 group by [user_id]
 having count(1) = sum(case when model = 'iphone 15' then 1 else 0 end)
 case when model = 'iphone 15' then 1 else 0 end
+
+
+
+
+with CTE_1
+as
+(
+select user_id 
+from iphone_tbl
+group by user_id
+
+)
+
+select * from iphone_tbl
