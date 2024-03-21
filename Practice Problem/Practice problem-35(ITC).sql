@@ -123,14 +123,19 @@ select * from [dbo].[K2 Inward & Outward]
 -----Create Status table, consist of distinct values
 create Table [Status]
 (
-Zone varchar(12)
-)
+Zone varchar(30)
+);
 
-Insert into [Status]
-(
-Zone 
-)
-select distinct [Status] from Truck_Placed_Vendor
+Insert into [Status](Zone) values 
+('K1 & K3'),
+('K-2 Inward'),
+('K-2 Outward')
+
+select * from [Status]
+
+---drop table [Status]
+
+
 ------------------------------------------------------------------
 
 -----------------Sales Report 
@@ -272,7 +277,7 @@ select * from CTE_6
 -------Detention_K2_In_Out
 create or alter view Detention_K2_In_Out as
 select [Shipment no], [Truck No], 
-sum(CFC) as CFC, sum([    Quantity]) as Quantity 
+sum(CFC) as CFC, sum([Quantity]) as Quantity 
 from [dbo].[K2 Inward & Outward]
 where [Shipment no] is not null
 group by [Shipment no], [Truck No]
@@ -334,3 +339,6 @@ end
 ----------------------------------------------------------------------------------------
 
 select max([Date])from  [dbo].[Attendence]
+
+
+select * from [dbo].[Change_Datatyoe] 
