@@ -16,6 +16,7 @@ values
 
 select * from entries
 
+go
 with CTE as
 (
 select name, count(address) as total_visit
