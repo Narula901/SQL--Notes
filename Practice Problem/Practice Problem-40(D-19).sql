@@ -16,6 +16,15 @@ INSERT INTO Events_table VALUES (
 ('2', 'page views', 12),
 ('4', 'reviews', 6);
 
+/*
+
+the avergae activity of a particular event_Type is the average occurences across all
+companies that have this event .
+note : An active business is a business that has more than one event _type such that  their 
+occurences is strictly greater than the average activity for that event.
+
+*/
+
 
 select * from Events_table
 
@@ -32,6 +41,24 @@ on E.event_type = C.event_type
 where E.occurences > C.[avg]
 group by E.business_id
 having count(*) >1
+
+
+
+----Solve with the help of Window Function
+
+with CTE as
+(
+select *,
+AVG(occurences) over (partition by event_type)  average
+from Events_table
+order by  business_id         
+)
+select business_id
+from CTE
+where occurences > average
+group by business_id
+having count(*) >1
+
 
 
 
