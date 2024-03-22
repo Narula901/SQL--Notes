@@ -67,3 +67,33 @@ group by name, resources
 group by name,floor
 
 select
+
+
+
+-----Other_Method
+
+with CTE as
+(
+select *,
+count(floor) over (partition by [name], [floor] order by [name], [floor]) cnt,
+count([name]) over (partition by [name] order by [name]) cnt_name
+from entries
+), 
+CTE_1 as
+(
+select [name], resources
+from entries
+group by [name], resources
+),
+CTE_2 as
+(
+select [name], STRING_AGG(resources, ',') resources_used
+from CTE_1
+group by [name]
+)
+select C.[floor], C.[name], C.cnt_name, C2.resources_used
+from CTE C
+inner join CTE_2 C2
+on C.[name] = C2.[name]
+where C.cnt = (select max(cnt) from CTE)
+group by C.[floor], C.[name], C.cnt_name, C2.resources_used
