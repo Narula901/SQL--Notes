@@ -34,6 +34,13 @@ INSERT INTO Exam VALUES (
 ('40', '4', '80');
 
 
+/*
+write a query to report the students(student_id , student_name) being quiet in all exam?
+A 'quite' student is the one who took at least one exam  and didn't score neither  the high score nor the low score.
+Don't return the student who has never taken any exam . Return the result table ordered by student_id
+*/
+
+
 select * from quiet_student
 
 select * from Exam
