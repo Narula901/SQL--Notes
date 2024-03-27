@@ -341,4 +341,41 @@ end
 select max([Date])from  [dbo].[Attendence]
 
 
-select * from [dbo].[Change_Datatyoe] 
+
+
+------------------------------------------------------------------------------------------------
+
+-------------------- BOPT Dashboard
+
+ALTER TABLE[dbo].[Bopt Name]
+ADD Status  varchar(5)
+
+UPDATE [dbo].[Bopt Name]
+SET  Status = 'BOPT'
+
+ALTER TABLE [dbo].[HRT Name]
+ADD Status  varchar(5)
+
+UPDATE [dbo].[HRT Name]
+SET  Status = 'HRT'
+
+
+
+create or alter view [Final BOPT Data] as
+with BOPT as
+(
+select C.*, B.[Status]
+from [dbo].[Consolidated Report] C
+inner join  [dbo].[Bopt Name] B
+on C.[USER] = B.[Name]
+),
+HRT as 
+(
+select C.*, H.[Status]
+from [dbo].[Consolidated Report] C
+inner join  [dbo].[HRT Name] H
+on C.[USER] = H.[Name]
+)
+select * from BOPT
+union
+select * from HRT
